@@ -6,8 +6,13 @@ from models import Element
 @db_session
 def init() -> None:
     '''Initialise les données de la table Elements.'''
-    Element(name = "Wrath")
-    Element(name = "Sin")
+    Element(name = "Haine")
+    Element(name = "Pêché")
+    Element(name = "Consolation")
+    Element(name = "Clémence")
+    Element(name = "Supplice")
+    Element(name = "Vertu")
+
 
 @db_session
 def find_all() -> List[Element]:
@@ -15,9 +20,9 @@ def find_all() -> List[Element]:
     return select(e for e in Element)
     
 @db_session
-def add_element(id_unique: int, name: str) -> None:
+def add_element(name: str) -> None:
     # Makes the check if this element already exists (constraint violation).
-    if (Element.exists(id_unique = id_unique)): print("Cet élément existe déjà (contrainte délenchée)."); return
+    if (Element.exists(name = name)): print("Cet élément existe déjà (contrainte délenchée)."); return
 
     # Registers a new record.
-    Element(id_unique = id_unique, name = name)
+    Element(name = name)

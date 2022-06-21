@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 from pony.orm import *
-from models import User
+from models import User, Element
 
 @db_session
 def find_all() -> List[User]:
@@ -20,5 +20,5 @@ def add_user(id_unique: int, id_server: int, name: str) -> None:
     if (User.exists(id_unique = id_unique)): print("Cet utilisateur existe déjà (contrainte délenchée)."); return
 
     # Registers a new record.
-    User(id_unique = id_unique, id_server = id_server, name = name, gold = 500, tick = datetime.now())
+    User(id_unique = id_unique, id_server = id_server, name = name, gold = 500, tick = datetime.now(), element = Element.get(id_unique = 1))
 
