@@ -6,12 +6,14 @@ from models import Element
 @db_session
 def init() -> None:
     '''Initialise les données de la table Elements.'''
-    Element(name = "Haine")
-    Element(name = "Pêché")
-    Element(name = "Consolation")
-    Element(name = "Clémence")
-    Element(name = "Supplice")
-    Element(name = "Vertu")
+    
+    if (len(select(e for e in Element)) == 0):
+        Element(name = "Haine")
+        Element(name = "Pêché")
+        Element(name = "Consolation")
+        Element(name = "Clémence")
+        Element(name = "Supplice")
+        Element(name = "Vertu")
 
 
 @db_session

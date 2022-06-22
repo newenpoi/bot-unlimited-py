@@ -15,10 +15,9 @@ def find_all_users_ids_from_guild(guild_id: int) -> List[int]:
     return users
     
 @db_session
-def add_user(id_unique: int, id_server: int, name: str) -> None:
+def add_user(id_unique: int, id_server: int, nickname: str) -> None:
     # Makes the check if this user already exists (constraint violation).
     if (User.exists(id_unique = id_unique)): print("Cet utilisateur existe déjà (contrainte délenchée)."); return
 
     # Registers a new record.
-    User(id_unique = id_unique, id_server = id_server, name = name, gold = 500, tick = datetime.now(), element = Element.get(id_unique = 1))
-
+    User(id_unique = id_unique, id_server = id_server, nickname = nickname, gold = 500, tick = datetime.now(), element = Element.get(id_unique = 1), health = 1000)

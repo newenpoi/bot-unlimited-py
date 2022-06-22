@@ -1,11 +1,13 @@
 import nextcord
-import config.settings as settings
 import os
+
+import models
+models.setup()
 
 from nextcord.ext.commands import Bot
 from os import environ
 from dotenv import load_dotenv
-from models import db
+
 from services import element_service
 
 # import platform, asyncio
@@ -15,14 +17,10 @@ load_dotenv()
 token = environ["TOKEN"]
 if not token: exit("Aucun token n'est spécifié dans votre environnement.")
 
-# Initialisation de l'ORM avec les coordonnées spécifiées...
-db.bind(**settings.db_params)
-db.generate_mapping(create_tables = True)
-
 # Initialisation des tables.
 element_service.init()
 
-intents = nextcord.Intents().default(); intents.members = True
+intents = nextcord.Intents().default(); intents.members = True; intents.message_content = True
 client = Bot(intents = intents)
 client.remove_command('help')
 
