@@ -8,7 +8,7 @@ class Reload(Cog):
         self.bot = bot
 
     @slash_command(name = "reload", description = "Recharge le rouage spécifié.", guild_ids = [535877732106764288], default_member_permissions = 8)
-    async def ping(self, interaction: Interaction, extension: str = SlashOption(required = True, description = "Spécifier le rouage à recharger.")) -> None:
+    async def reload(self, interaction: Interaction, extension: str = SlashOption(required = True, description = "Spécifier le rouage à recharger.")) -> None:
         
         # Embed.
         embed = Embed(title = 'Reloaded', description = f"Le rouage avec pour nom d'extension {extension} a été correctement rechargé.", color = 0xdc143c)
@@ -20,7 +20,7 @@ class Reload(Cog):
         # response = await reader.read('commands/reload', 'reloaded', extension)
         await interaction.send(embed = embed)
 
-    @ping.error
+    @reload.error
     async def error(self, interaction, error):
         if isinstance(error, ExtensionNotFound): response = await reader.read('commands/reload', 'error'); await interaction.send(response)
         else: await interaction.send(f'```Stack Trace : ${error}```')

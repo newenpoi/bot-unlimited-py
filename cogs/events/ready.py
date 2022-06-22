@@ -8,7 +8,7 @@ from pony.orm import *
 from utils.activity import ActivityType
 from services import user_service
 
-class Events(Cog):
+class Ready(Cog):
     def __init__(self, client : Client) -> None:
         self.client = client
 
@@ -54,4 +54,4 @@ class Events(Cog):
         await asyncio.create_task(self.syncs(60))
 
 def setup(bot: Client) -> None:
-    bot.add_cog(Events(bot))
+    bot.add_cog(Ready(bot))
