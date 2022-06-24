@@ -12,23 +12,27 @@ from dotenv import load_dotenv
 from services import element_service
 from services import interaction_service
 
-# import platform, asyncio
-# if platform.system() == 'Windows': asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+class CustomClient():
+    def __init__(self, intents):
+        self.client = Bot(intents = intents)
+        self.client.remove_command('help')
+        
+        load_dotenv()
+        self.token = environ["TOKEN"]
+        if not self.token: exit("Aucun token n'est spécifié dans votre environnement.")
 
-load_dotenv()
-token = environ["TOKEN"]
-if not token: exit("Aucun token n'est spécifié dans votre environnement.")
+        self.init_services()
+        self.load_extensions()
+        self.client.run(self.token)
 
-# Initialisation des données.
-element_service.init()
-interaction_service.init()
-
-intents = nextcord.Intents().default(); intents.members = True; intents.message_content = True
-client = Bot(intents = intents)
-client.remove_command('help')
-
-# Loads each commands and events as extensions (unix and windows path friendly).
-for f in [f'cogs.events.{f[:-3]}' for f in os.listdir((Path(__file__).parent / "cogs/events")) if f.endswith('py')]: client.load_extension(f)
-for f in [f'cogs.commands.{f[:-3]}' for f in os.listdir((Path(__file__).parent / "cogs/commands")) if f.endswith('py')]: client.load_extension(f)
-
-client.run(token)
+    def init_services(self):
+        element_service.init()
+        interaction_service.init()
+        
+    def load_extensions(self):
+        for f in [f'cogs.events.{f[:-3]}' for f in os.listdir((Path(__file__).parent / "cogs/events")) if f.endswith('py')]: self.client.load_extension(f)
+        for f in [f'cogs.commands.{f[:-3]}' for f in os.listdir((Path(__file__).parent / "cogs/commands")) if f.endswith('py')]: self.client.load_extension(f)
+        
+if __name__ == '__main__':
+    intents = nextcord.Intents().default(); intents.members = True; intents.message_content = True
+    client = CustomClient(intents)

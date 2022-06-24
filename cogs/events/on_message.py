@@ -9,8 +9,8 @@ class Message(Cog):
 
     @Cog.listener()
     async def on_message(self, message: nextcord.Message) -> None:
-        if message.author == self.client.user: return
-        await message.channel.send(f"Interception du message : {message.content}")
+        # Code...
+        return False
         
 def setup(bot: Client) -> None:
     bot.add_cog(Message(bot))

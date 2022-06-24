@@ -1,1 +1,1 @@
-db_params = {'provider': 'sqlite', 'filename': 'hatada.sqlite', 'create_db': True}
+db_params = {'provider': 'sqlite', 'filename': '../hatada.sqlite', 'create_db': True}
