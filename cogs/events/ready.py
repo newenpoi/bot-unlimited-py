@@ -6,7 +6,7 @@ from nextcord.ext.commands import Cog
 from pony.orm import *
 
 from utils.activity import ActivityType
-from services import user_service
+from services import user_service, interaction_service
 
 class Ready(Cog):
     def __init__(self, client : Client) -> None:
@@ -38,6 +38,12 @@ class Ready(Cog):
             # Sleeps for a determined amount of time.
             await asyncio.sleep(timer)
     
+    async def clean(self, timer):
+        while True:
+            # Removes the interactions from database that exceeded a certain timespan.
+            interaction_service.delete_interaction_where_timestamp_exceed(300)
+            await asyncio.sleep(timer)
+    
     @Cog.listener()
     async def on_ready(self):
 
@@ -52,6 +58,9 @@ class Ready(Cog):
 
         # Periodically syncs new users of guilds into database if there is.
         await asyncio.create_task(self.syncs(60))
+
+        # Periodically cleans up interactions.
+        await asyncio.create_task(self.clean(60))
 
 def setup(bot: Client) -> None:
     bot.add_cog(Ready(bot))

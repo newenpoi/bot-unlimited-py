@@ -11,7 +11,8 @@ class User(db.Entity):
     tick = Required(datetime, default = lambda: datetime.now())
     element = Required('Element')
     date_birth = Optional(date)
-    health = Required(int, default = 1000)
+    health = Required(int, default = 100)
+    interactions = Set('User_Interaction')
 
     # Exemple de méthode personnalisée de l'entité User.
     def get_nickname_and_gold(self):
