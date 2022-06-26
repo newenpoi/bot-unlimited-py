@@ -4,7 +4,7 @@ from .base import db
 from datetime import date, datetime
 
 class User(db.Entity):
-    id_unique = PrimaryKey(int, size = 64, auto = False)
+    id_unique = Required(int, size = 64, auto = False)
     id_server = Required(int, size = 64)
     nickname = Required(str, 32)
     gold = Required(int, default = 500)
@@ -12,7 +12,8 @@ class User(db.Entity):
     element = Required('Element')
     date_birth = Optional(date)
     health = Required(int, default = 100)
-    interactions = Set('User_Interaction')
+    interactions = Set('Interaction')
+    PrimaryKey(id_unique, id_server)
 
     # Exemple de méthode personnalisée de l'entité User.
     def get_nickname_and_gold(self):

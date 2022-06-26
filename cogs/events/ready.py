@@ -1,12 +1,14 @@
 import asyncio
 import nextcord
+from datetime import datetime
 
 from nextcord import Client
 from nextcord.ext.commands import Cog
 from pony.orm import *
 
+from utils import helper
 from utils.activity import ActivityType
-from services import user_service, interaction_service
+from services import user_service, interaction_service, scoreboard_service
 
 class Ready(Cog):
     def __init__(self, client : Client) -> None:
@@ -40,8 +42,21 @@ class Ready(Cog):
     
     async def clean(self, timer):
         while True:
-            # Removes the interactions from database that exceeded a certain timespan.
-            interaction_service.delete_interaction_where_timestamp_exceed(300)
+            interactions = {'soulever': 3000, 'roue': 43200, 'epenis': 86400}
+
+            for interaction, timespan in interactions.items():
+                # Removes the interactions from database that exceeded a certain timespan.
+                interaction_service.delete_interaction_where_timestamp_difference_exceed(interaction, timespan)
+
+            # Wipes the scoreboard every 24 hours.
+            if (helper.temporal(datetime.now())[:-3] == '18:00'):
+                score = scoreboard_service.find_top()
+                
+                # Clears the scoreboard.
+
+                # Show the winner.
+                print(score.unit)
+            
             await asyncio.sleep(timer)
     
     @Cog.listener()
@@ -57,10 +72,7 @@ class Ready(Cog):
         await self.client.change_presence(status = nextcord.Status.online, activity = nextcord.Activity(name = "les échos des âmes.", type = ActivityType.listening))
 
         # Periodically syncs new users of guilds into database if there is.
-        await asyncio.create_task(self.syncs(60))
-
-        # Periodically cleans up interactions.
-        await asyncio.create_task(self.clean(60))
+        await asyncio.gather(self.syncs(60), self.clean(60))
 
 def setup(bot: Client) -> None:
     bot.add_cog(Ready(bot))

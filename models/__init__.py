@@ -2,7 +2,7 @@ from .base import db
 from .users import User
 from .elements import Element
 from .interactions import Interaction
-from .interactions import User_Interaction
+from .scoreboard import Scoreboard
 
 import config.settings as settings
 

@@ -27,7 +27,6 @@ class CustomClient():
 
     def init_services(self):
         element_service.init()
-        interaction_service.init()
         
     def load_extensions(self):
         for f in [f'cogs.events.{f[:-3]}' for f in os.listdir((Path(__file__).parent / "cogs/events")) if f.endswith('py')]: self.client.load_extension(f)

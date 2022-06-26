@@ -1,12 +1,11 @@
-from datetime import datetime
 from typing import List
 from pony.orm import *
-from models import User, Element, Interaction, User_Interaction
+from models import User, Element
 
 @db_session
 def find_all() -> List[User]:
     '''Renvoie tous les utilisateurs'''
-    return select(u for u in User)
+    return select (u for u in User)
 
 @db_session
 def find_all_users_ids_from_guild(guild_id: int) -> List[int]:
@@ -18,20 +17,16 @@ def add_user(id_unique: int, id_server: int, nickname: str) -> None:
     User(id_unique = id_unique, id_server = id_server, nickname = nickname, element = Element.get(id_unique = 1))
 
 @db_session
-def find_user_interactions_having(user_id: int, name: str) -> int:
+def find_user_interactions_having(user_id: int, server_id: int, name: str):
     '''Renvoie les userinteractions spécifiés par le nom de l'interaction pour cet utilisateur.'''
-    return select (userinteraction for userinteraction in User[user_id].interactions if userinteraction.interaction.name == name)[:]
+    return select (interaction for interaction in User[user_id, server_id].interactions if interaction.name == name)[:]
 
 @db_session
-def find_user_health(user_id: int) -> int:
+def find_user_health(user_id: int, server_id) -> int:
     '''Renvoie le nombre de points de vie de cet utilisateur.'''
-    return User[user_id].health
+    return User[user_id, server_id].health
 
 @db_session
-def update_health(user_id: int, health: int) -> None:
+def edit_health(user_id: int, server_id, health: int) -> None:
     '''Modifie les points de vie de l'utilisateur.'''
-    User[user_id].health += health
-
-@db_session
-def add_interaction(identifier: int, name: str) -> None:
-    User[identifier].interactions.add(User_Interaction(user = identifier, interaction = Interaction.get(name = name)))
+    User[user_id, server_id].health += health
