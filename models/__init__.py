@@ -1,11 +1,16 @@
-from .base import db
-from .users import User
-from .elements import Element
-from .interactions import Interaction
-from .scoreboard import Scoreboard
+from .base import Database
 
-import config.settings as settings
+from .element import Element
+from .scoreboard import Scoreboard
+from .interaction import Interaction
+from .user import User
 
 def setup():
-    db.bind(**settings.db_params)
-    db.generate_mapping(create_tables = True)
+    with Database() as db:
+        
+        db.execute(Element.model)
+        if not db.count('elements') or db.count('elements') != len(Element.data): [db.execute(e) for e in Element.data]
+
+        db.execute(Scoreboard.model)
+        db.execute(User.model)
+        db.execute(Interaction.model)

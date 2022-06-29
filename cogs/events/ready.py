@@ -20,13 +20,14 @@ class Ready(Cog):
             for guild in self.client.guilds:
                 
                 # Gets the amount of members synced in the database in this server.
-                rows = user_service.find_all_users_ids_from_guild(guild.id)
+                rows = user_service.find_all_user_id_having_server(guild.id)
                 syncs = 0
                 
                 # Makes the comparison with the members (also includes bots) present in the guild.
                 if len(rows) < (guild.member_count):
                     # Syncs every member of the server that is not synchronized yet.
                     for member in guild.members:
+                        # TODO : Sync user display name.
                         # If this guild member id is not present in rows.
                         if member.id not in rows:
                             # Adds a new record for this user.
@@ -46,16 +47,18 @@ class Ready(Cog):
 
             for interaction, timespan in interactions.items():
                 # Removes the interactions from database that exceeded a certain timespan.
-                interaction_service.delete_interaction_where_timestamp_difference_exceed(interaction, timespan)
+                interaction_service.delete_heuristic_interaction(interaction, timespan)
 
             # Wipes the scoreboard every 24 hours.
             if (helper.temporal(datetime.now())[:-3] == '18:00'):
-                score = scoreboard_service.find_top()
+                # Gets the winner of every server.
+                scores = scoreboard_service.find_top_scores()
                 
-                # Clears the scoreboard.
+                # Clears the scoreboard of every server.
+                scoreboard_service.truncate_scoreboard()
 
-                # Show the winner.
-                print(score.unit)
+                # Show the winner of every server.
+                for score in scores: print(score.unit)
             
             await asyncio.sleep(timer)
     

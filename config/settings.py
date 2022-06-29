@@ -1,1 +1,1 @@
-db_params = {'provider': 'sqlite', 'filename': '../hatada.sqlite', 'create_db': True}
+db_params = {'host': 'localhost', 'user': 'root', 'passwd': '', 'database': 'hatada', 'port': 3306, 'autocommit': True}

@@ -1,32 +1,20 @@
+import re
 from typing import List
-from pony.orm import *
-from models import User, Element
+from models.base import Database
 
-@db_session
-def find_all() -> List[User]:
-    '''Renvoie tous les utilisateurs'''
-    return select (u for u in User)
+def find_all_user_id_having_server(server: int) -> list:
+    with Database() as db:
+        return db.find_all(f'select id_unique from users where id_server = {server}')
 
-@db_session
-def find_all_users_ids_from_guild(guild_id: int) -> List[int]:
-    return select (u.id_unique for u in User if u.id_server == guild_id)[:]
-    
-@db_session
-def add_user(id_unique: int, id_server: int, nickname: str) -> None:
-    # Registers a new record.
-    User(id_unique = id_unique, id_server = id_server, nickname = nickname, element = Element.get(id_unique = 1))
+def add_user(identifier: int, server: int, nickname: str):
+    with Database() as db:
+        return db.execute(f'insert into users (id_unique, id_server, nickname) values ({identifier}, {server}, "{re.escape(nickname)}")')
 
-@db_session
-def find_user_interactions_having(user_id: int, server_id: int, name: str):
-    '''Renvoie les userinteractions spécifiés par le nom de l'interaction pour cet utilisateur.'''
-    return select (interaction for interaction in User[user_id, server_id].interactions if interaction.name == name)[:]
+def find_health(identifier: int, server: int):
+    with Database() as db:
+        structure = db.find_one(f'select health from users where id_unique = {identifier} and id_server = {server}')
+        return structure.health
 
-@db_session
-def find_user_health(user_id: int, server_id) -> int:
-    '''Renvoie le nombre de points de vie de cet utilisateur.'''
-    return User[user_id, server_id].health
-
-@db_session
-def edit_health(user_id: int, server_id, health: int) -> None:
-    '''Modifie les points de vie de l'utilisateur.'''
-    User[user_id, server_id].health += health
+def edit_health(identifier: int, server: int, health: int):
+    with Database() as db:
+        return db.execute(f'update users set health = health + {health} where id_unique = {identifier} and id_server = {server}')

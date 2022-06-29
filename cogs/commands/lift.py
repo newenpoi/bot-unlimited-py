@@ -17,19 +17,17 @@ class Lift(Cog):
 
         # La réponse initiale est définie sur None.
         response = None
-
-        # TODO : Voir si on peut se servir uniquement de User en évitant d'appeler plusieurs fois le service (dao).
         
-        # On a soulevé moins de trois personnes dans une période d'une journée.
-        n = len(user_service.find_user_interactions_having(interaction.user.id, interaction.guild.id, 'soulever'))
+        # On a soulevé moins de x personnes (TODO : Options).
+        n = interaction_service.find_interaction_count(interaction.user.id, interaction.guild.id, 'soulever')
         if (n >= 3): response = await reader.read('commands/lift', 'max')
         
         # On a assez de vitalité pour soulever la personne.
-        health = user_service.find_user_health(interaction.user.id, interaction.guild.id)
+        health = user_service.find_health(interaction.user.id, interaction.guild.id)
         if (health <= 0): response = await reader.read('commands/lift', 'vitality', member.display_name)
         
         # La cible doit avoir assez de vitalité pour être soulevée (ne doit pas être ko).
-        health = user_service.find_user_health(member.id, interaction.guild.id)
+        health = user_service.find_health(member.id, interaction.guild.id)
         if (health <= 0): response = await reader.read('commands/lift', 'ko', member.display_name)
 
         # Selon la condition de response.

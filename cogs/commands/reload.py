@@ -13,6 +13,7 @@ class Reload(Cog):
         # Embed.
         embed = Embed(title = 'Reloaded', description = f"Le rouage avec pour nom d'extension {extension} a été correctement rechargé.", color = 0xdc143c)
         embed.set_image(url = "https://cdn.discordapp.com/attachments/577914680282972170/985120463439155220/96586146_p0_master1200.jpg")
+        embed.set_footer(text = "Il sera peut être nécessaire de relancer deux fois la commande.", icon_url = "http://18.168.128.213/img/hatada/icons/reload.png")
 
         # Recharge l'extension spécifiée.
         self.bot.reload_extension(f'cogs.commands.{extension}')

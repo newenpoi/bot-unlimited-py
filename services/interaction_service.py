@@ -1,27 +1,24 @@
 from datetime import datetime
 from time import strftime
+
 from typing import List
-from pony.orm import *
-from models import Interaction, User
-from utils import helper
+from models.base import Database
 
-@db_session
-def find_all() -> List[Interaction]:
-    '''Returns all interactions.'''
-    return select (e for e in Interaction)
+def delete_heuristic_interaction(interaction: str, timespan: int):
+    with Database() as db:
+        return db.execute(f'delete from interactions where interactions.name = "{interaction}" and (timestampdiff(second, timestamp, now()) >= {timespan})')
 
-@db_session
-def find_interaction_timestamp(identifier: int, server: int, name: str) -> datetime:
-    '''
-        Returns the timestamp from this interaction.
-    '''
-    return select (interaction.timestamp for interaction in Interaction if interaction.name == name and interaction.user == User[identifier, server]).first()
-    
-@db_session
-def add_interaction(identifier: int, server: int, name: str) -> None:
-    # Registers a new record.
-    Interaction(name = name, user = User[identifier, server])
+def find_interaction_count(user: int, server: int, interaction: str):
+    '''Renvoie le nombre d'interactions de ce nom.'''
+    with Database() as db:
+        structure = db.find_one(f'select count(*) as n from interactions where user_id_unique = {user} and user_id_server = {server} and name = "{interaction}"')
+        return structure.n
 
-@db_session
-def delete_interaction_where_timestamp_difference_exceed(interaction: str, timespan: int):
-    Interaction.select(lambda i: i.name == interaction and i.timestamp >= raw_sql(f"datetime('now', '-{timespan} seconds', 'localtime')")).delete(bulk = True)
+def add_interaction(user: int, server: int, interaction: str):
+    with Database() as db:
+        return db.execute(f'insert into interactions (name, user_id_unique, user_id_server) values ("{interaction}", {user}, {server})')
+
+def find_interaction_timestamp(user: int, server: int, interaction: str):
+    with Database() as db:
+        structure = db.find_one(f'select timestamp from interactions where user_id_unique = {user} and user_id_server = {server} and name = "{interaction}"')
+        return structure.timestamp

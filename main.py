@@ -9,9 +9,6 @@ from nextcord.ext.commands import Bot
 from os import environ
 from dotenv import load_dotenv
 
-from services import element_service
-from services import interaction_service
-
 class CustomClient():
     def __init__(self, intents):
         self.client = Bot(intents = intents)
@@ -21,12 +18,8 @@ class CustomClient():
         self.token = environ["TOKEN"]
         if not self.token: exit("Aucun token n'est spécifié dans votre environnement.")
 
-        self.init_services()
         self.load_extensions()
         self.client.run(self.token)
-
-    def init_services(self):
-        element_service.init()
         
     def load_extensions(self):
         for f in [f'cogs.events.{f[:-3]}' for f in os.listdir((Path(__file__).parent / "cogs/events")) if f.endswith('py')]: self.client.load_extension(f)
