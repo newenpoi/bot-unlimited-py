@@ -1,4 +1,3 @@
-from datetime import datetime
 
 def nest(d):
     """Converti un dictionnaire en une structure imbriquée (un objet de Structure)."""
@@ -12,6 +11,3 @@ def nest(d):
     for k in d:
         objet.__dict__[k.lower()] = nest(d[k])
     return objet
-
-def temporal(timestamp: datetime) -> str:
-    return datetime.strftime(timestamp, "%H:%M:%S")
