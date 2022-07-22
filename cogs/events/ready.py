@@ -8,13 +8,14 @@ from pony.orm import *
 
 from utils import dateutils, reader
 from utils.activity import ActivityType
-from services import user_service, interaction_service, scoreboard_service, binding_service
+from services import user_service, interaction_service, scoreboard_service, binding_service, bid_service
 
 class Ready(Cog):
     def __init__(self, client : Client) -> None:
         self.client = client
 
     async def syncs(self, timer):
+        '''Synchronizes users with the database.'''
         while True:
             # Syncs the members of every guilds with the database.
             for guild in self.client.guilds:
@@ -42,6 +43,7 @@ class Ready(Cog):
             await asyncio.sleep(timer)
     
     async def clean(self, timer):
+        '''Periodically cleans interactions and scoreboard.'''
         while True:
             interactions = {'soulever': 3000, 'roue': 43200, 'epenis': 86400}
 
@@ -52,19 +54,38 @@ class Ready(Cog):
             # Wipes the scoreboard every 24 hours.
             if (dateutils.temporal(datetime.now())[:-3] == '18:00'):
                 # Gets the winner of every server.
-                scores = scoreboard_service.find_top_scores()
-                
-                # Clears the scoreboard of every server.
-                scoreboard_service.truncate_scoreboard()
+                for guild in self.client.guilds:
 
-                # Show the winner of every server.
-                for score in scores: print(score.unit)
+                    # Finds the bound channel for announcement or continues the loop if there is none.
+                    channel = binding_service.find_bound_channel(guild.id)
+                    if not channel: continue
+
+                    # Fetches the channel to announce.
+                    channel = self.client.get_channel(channel.channel)
+
+                    # Finds the top score of this server or continue if there is none.
+                    score = scoreboard_service.find_top_score(guild.id)
+                    if not score: continue
+
+                    # Announces on this server.
+                    user = self.client.get_user(score.user)
+                    response = await reader.read('events/ready', 'scoreboard', user)
+
+                    await channel.send(response)
+                    
+                # Clears the scoreboard.
+                scoreboard_service.truncate_scoreboard()
             
             await asyncio.sleep(timer)
     
     async def heuristics(self, timer):
+        '''Checks for heuristics events (ie birthday and character bid of the day).'''
         while True:
-            # Let's see if we have birthday to announce at this time.
+            # Rotates waifu bid for every server.
+            if (dateutils.temporal(datetime.now())[:-3] == '12:24'):
+                for guild in self.client.guilds: bid_service.rotate(guild.id)
+            
+            # Birthday to announce at this time.
             if (dateutils.temporal(datetime.now())[:-3] == '19:00'):
                 # Find users with birthday not null for each server and date of today.
                 for guild in self.client.guilds:
@@ -73,15 +94,21 @@ class Ready(Cog):
                     channel = binding_service.find_bound_channel(guild.id)
                     if not channel: continue
 
+                    # Fetches the channel to announce.
+                    channel = self.client.get_channel(channel.channel)
+
                     # All the birthdays from this server.
                     users = user_service.find_users_having_birthday(guild.id)
                     
                     # Loop through all users having birthday in this server.
                     for user in users:
-                        # Fetches the channel to announce.
-                        channel = self.client.get_channel(channel.channel)
                         
-                        response = await reader.read('events/ready', 'birthday', user.display_name)
+                        # Fetches the user.
+                        user_fetch = self.client.get_user(user.id)
+                        
+                        if user.show: response = await reader.read('events/ready', 'birthday', user_fetch.display_name, dateutils.age(user.date))
+                        else: response = await reader.read('events/ready', 'birthday-age', user_fetch.display_name)
+                        
                         await channel.send(response)
             
             await asyncio.sleep(timer)
