@@ -31,9 +31,9 @@ class Slot(Cog):
         elif s['result'] == 2: incomes = 400
         else: incomes = 4000
 
-        if not s['result']: description = f'Tu feras mieux la prochaine fois ! ```diff\n- 💰 - 100 Roubles```'
-        elif s['result'] == 2: description = f'On dirait que ça roule plutôt bien ! ```diff\n+ 💰 + {incomes} Roubles```'
-        else: description = f'Certains ont vraiment le cul bordé de nouilles ! ```diff\n- 💰 + {incomes} Roubles```'
+        if not s['result']: description = f'Tu feras mieux la prochaine fois ! ```diff\n- 💰 100 Roubles```'
+        elif s['result'] == 2: description = f'On dirait que ça roule plutôt bien ! ```diff\n+ 💰 {incomes} Roubles```'
+        else: description = f'Certains ont vraiment le cul bordé de nouilles ! ```diff\n- 💰 {incomes} Roubles```'
 
         # Embed.
         embed = Embed(title = title, description = description, color = 0xfcba03)

@@ -1,3 +1,5 @@
 .env
 __pycache__
 /tests
+/assets/production/*
+/assets/faces/*
