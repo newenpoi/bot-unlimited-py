@@ -20,7 +20,7 @@ class Anniversary(Cog):
 
         # Vérifions qu'on ai pas déjà de date de définie.
         birth = user_service.find_birthday(interaction.user.id)
-        if birth: response = await reader.read('commands/anniversary', 'defined', birth)
+        if birth: response = await reader.read('commands/anniversary', 'exist', birth)
         else:
 
             # Vérifier que la date d'anniversaire soit bien valide.
