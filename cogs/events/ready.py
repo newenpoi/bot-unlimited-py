@@ -1,14 +1,15 @@
 import asyncio
+import random
 import nextcord
 from datetime import datetime
 
-from nextcord import Client
+from nextcord import Client, Embed
 from nextcord.ext.commands import Cog
 from pony.orm import *
 
 from utils import dateutils, reader
 from utils.activity import ActivityType
-from services import user_service, interaction_service, scoreboard_service, binding_service, bid_service
+from services import user_service, interaction_service, scoreboard_service, binding_service
 
 class Ready(Cog):
     def __init__(self, client : Client) -> None:
@@ -38,6 +39,7 @@ class Ready(Cog):
 
                 # Shows the number of synced users.
                 if syncs: print(f'Synchronisation de {syncs} utilisateurs pour la guilde {guild.name}.')
+                else: print(f'Aucun utilisateur à synchroniser chez {guild.name}.')
             
             # Sleeps for a determined amount of time.
             await asyncio.sleep(timer)
@@ -45,14 +47,15 @@ class Ready(Cog):
     async def clean(self, timer):
         '''Periodically cleans interactions and scoreboard.'''
         while True:
-            interactions = {'soulever': 3000, 'roue': 43200, 'epenis': 86400}
+            interactions = {'soulever': 3000, 'roue': 43200, 'epenis': 86400, 'waifu': 8400}
 
             for interaction, timespan in interactions.items():
                 # Removes the interactions from database that exceeded a certain timespan.
                 interaction_service.delete_heuristic_interaction(interaction, timespan)
 
+            # TODO: Move it to heuristics.
             # Wipes the scoreboard every 24 hours.
-            if (dateutils.temporal(datetime.now())[:-3] == '18:00'):
+            if (dateutils.temporal(datetime.now())[:-3] == '21:00'):
                 # Gets the winner of every server.
                 for guild in self.client.guilds:
 
@@ -67,9 +70,15 @@ class Ready(Cog):
                     score = scoreboard_service.find_top_score(guild.id)
                     if not score: continue
 
+                    # Amount of gold won.
+                    amount = random.randint(1000, 1500)
+
                     # Announces on this server.
-                    user = self.client.get_user(score.user)
-                    response = await reader.read('events/ready', 'scoreboard', user)
+                    user_fetch = self.client.get_user(score.user)
+                    response = await reader.read('events/ready', 'scoreboard', user_fetch.display_name, score.value, score.unit, amount)
+
+                    # Adds money to the user.
+                    user_service.edit_gold(user_fetch.id, guild.id, amount)
 
                     await channel.send(response)
                     
@@ -81,12 +90,8 @@ class Ready(Cog):
     async def heuristics(self, timer):
         '''Checks for heuristics events (ie birthday and character bid of the day).'''
         while True:
-            # Rotates waifu bid for every server.
-            if (dateutils.temporal(datetime.now())[:-3] == '12:24'):
-                for guild in self.client.guilds: bid_service.rotate(guild.id)
-            
             # Birthday to announce at this time.
-            if (dateutils.temporal(datetime.now())[:-3] == '19:00'):
+            if (dateutils.temporal(datetime.now())[:-3] == '00:00'):
                 # Find users with birthday not null for each server and date of today.
                 for guild in self.client.guilds:
 
@@ -106,8 +111,8 @@ class Ready(Cog):
                         # Fetches the user.
                         user_fetch = self.client.get_user(user.id)
                         
-                        if user.show: response = await reader.read('events/ready', 'birthday', user_fetch.display_name, dateutils.age(user.date))
-                        else: response = await reader.read('events/ready', 'birthday-age', user_fetch.display_name)
+                        if user.display: response = await reader.read('events/ready', 'birthday-age', user_fetch.display_name, dateutils.age(user.date), f'<@{user_fetch.id}>')
+                        else: response = await reader.read('events/ready', 'birthday', user_fetch.display_name, f'<@{user_fetch.id}>')
                         
                         await channel.send(response)
             
@@ -125,7 +130,7 @@ class Ready(Cog):
         # Setting the bot's activity (status).
         await self.client.change_presence(status = nextcord.Status.online, activity = nextcord.Activity(name = "les échos des âmes.", type = ActivityType.listening))
 
-        # Periodically syncs new users of guilds into database if there is.
+        # Periodically.
         await asyncio.gather(self.syncs(60), self.clean(60), self.heuristics(60))
 
 def setup(bot: Client) -> None:

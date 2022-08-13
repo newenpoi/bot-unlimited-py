@@ -19,11 +19,11 @@ class EPenis(Cog):
         score = scoreboard_service.find_score(interaction.user.id, interaction.guild.id)
 
         # Finds when we used this command (if there is).
-        timestamp = interaction_service.find_interaction_timestamp(interaction.user.id, interaction.guild.id, 'epenis')
+        inter = interaction_service.find_interaction_timestamp(interaction.user.id, interaction.guild.id, 'epenis')
         
         # If there is a score and timestamp or not.
-        if (score and timestamp): response = await reader.read('commands/epenis', 'max', dateutils.temporal(timestamp), score.value, score.unit)
-        if (score and not timestamp):
+        if (score and inter): response = await reader.read('commands/epenis', 'max', dateutils.temporal(inter.timestamp), score.value, score.unit)
+        if (score and not inter):
             # This response will be sent if we cannot get an interaction timestamp signature but still have the score.
             response = await reader.read('commands/epenis', 'basic', score.value, score.unit)
 

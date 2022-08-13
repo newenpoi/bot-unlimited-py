@@ -20,5 +20,4 @@ def add_interaction(user: int, server: int, interaction: str):
 
 def find_interaction_timestamp(user: int, server: int, interaction: str):
     with Database() as db:
-        structure = db.find_one(f'select timestamp from interactions where user_id_unique = {user} and user_id_server = {server} and name = "{interaction}"')
-        return structure.timestamp
+        return db.find_one(f'select timestamp from interactions where user_id_unique = {user} and user_id_server = {server} and name = "{interaction}"')

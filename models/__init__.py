@@ -9,7 +9,7 @@ from .role import Role
 
 from .waifu import Waifu
 from .user_waifu import User_Waifu
-from .bid import Bid
+from .user_pull import User_Pull
 
 def setup():
     with Database() as db:
@@ -28,7 +28,8 @@ def setup():
 
         # @ManyToMany relationships.
         db.execute(Waifu.model)
+        db.execute(User_Pull.model)
         db.execute(User_Waifu.model)
         if not db.count('waifus') or db.count('waifus') != len(Waifu.data): [db.execute(e) for e in Waifu.data]
 
-        db.execute(Bid.model)
+        

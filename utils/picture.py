@@ -16,11 +16,14 @@ def slot() -> dict:
     
     # Faces for the slot machine.
     root = Path(__file__).parent.parent
-    files = os.listdir(f'{root}/assets/faces')
+    
+    la = os.listdir(f'{root}/assets/faces'); lb = os.listdir(f'{root}/assets/faces'); lc = os.listdir(f'{root}/assets/faces')
 
     # Destination.
-    destination = root / f'assets/production/{datetime.now().timestamp()}.{extension}'
+    file = datetime.now().timestamp()
+    destination = root / f'assets/production/{file}.{extension}'
     production = '/var/www/unlimited/app/public/img/hatada/slot'
+    url = f'http://18.168.128.213/img/hatada/slot/{file}.{extension}'
 
     # Retrieves the blueprint to handle (contains nine pictures).
     img = Image.open(f'{root}/assets/slot.png')
@@ -34,8 +37,19 @@ def slot() -> dict:
             x = 4
             y = resolution + y + 4
         
-        # Picks up a random face.
-        icon = Image.open(f'assets/faces/{random.choice(files)}')
+        # Picks up a random face depending on the vertical line.
+        if i in [0, 3, 6]:
+            rand = random.randint(0, len(la) - 1)
+            icon = Image.open(f'{root}/assets/faces/{la.pop(rand)}')
+
+        if i in [1, 4, 7]:
+            rand = random.randint(0, len(lb) - 1)
+            icon = Image.open(f'{root}/assets/faces/{lb.pop(rand)}')
+
+        if i in [2, 5, 8]:
+            rand = random.randint(0, len(lc) - 1)
+            icon = Image.open(f'{root}/assets/faces/{lc.pop(rand)}')
+        
         combinations.append(icon)
 
         # Reduces brightness except for the center line.
@@ -55,13 +69,13 @@ def slot() -> dict:
     img.save(destination)
 
     # We must move this picture to the production folder in /var/www/unlimited/app/public/img/hatada/slot
-    try: shutil.copyfile(destination, production)
+    try: shutil.move(destination, production)
     except: print('Cannot move file from destination to production folder.')
 
     # Résultats de combinaisons.
-    if combinations[3] == combinations[3 + 1] and combinations[3 + 1] == combinations[3 + 2]: return {'result': 3, 'source': production}
-    if combinations[3] == combinations[3 + 1] or combinations[3 + 1] == combinations[3 + 2]: return {'result': 2, 'source': production}
-    return {'result': 0, 'source': production}
+    if combinations[3] == combinations[3 + 1] and combinations[3 + 1] == combinations[3 + 2]: return {'result': 3, 'source': url}
+    if combinations[3] == combinations[3 + 1] or combinations[3 + 1] == combinations[3 + 2]: return {'result': 2, 'source': url}
+    return {'result': 0, 'source': url}
     
 if __name__ == '__main__':
     s = slot()

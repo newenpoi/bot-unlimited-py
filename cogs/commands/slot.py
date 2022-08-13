@@ -15,7 +15,7 @@ class Slot(Cog):
         if (os.sep == "\\"): response = await reader.read('commands/slot', 'production'); return await interaction.send(response)
         
         # Simulates something heavy.
-        async with interaction.channel.typing(): await asyncio.sleep(0.5)
+        # async with interaction.channel.typing(): await asyncio.sleep(0.5)
 
         # The cost for the slot machine is hard coded (100).
         if not user_service.find_gold(interaction.user.id, interaction.guild_id) >= 100: return await reader.read('commands/slot', 'credit') 
