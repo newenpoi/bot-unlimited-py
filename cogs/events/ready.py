@@ -39,7 +39,6 @@ class Ready(Cog):
 
                 # Shows the number of synced users.
                 if syncs: print(f'Synchronisation de {syncs} utilisateurs pour la guilde {guild.name}.')
-                else: print(f'Aucun utilisateur à synchroniser chez {guild.name}.')
             
             # Sleeps for a determined amount of time.
             await asyncio.sleep(timer)
@@ -91,7 +90,7 @@ class Ready(Cog):
         '''Checks for heuristics events (ie birthday and character bid of the day).'''
         while True:
             # Birthday to announce at this time.
-            if (dateutils.temporal(datetime.now())[:-3] == '00:00'):
+            if (dateutils.temporal(datetime.now())[:-3] == '09:00'):
                 # Find users with birthday not null for each server and date of today.
                 for guild in self.client.guilds:
 
