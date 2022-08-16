@@ -14,7 +14,7 @@ class Waifu(Cog):
         response = None
         
         # On a exécuté cette commande trois fois dans un délai spécifié (TODO : Options).
-        n = interaction_service.find_interaction_count(interaction.user.id, interaction.guild.id, 'waifu')
+        n = interaction_service.find_user_interaction_count(interaction.user.id, interaction.guild.id, 'waifu')
         if (n >= 3): response = await reader.read('commands/waifu', 'max')
 
         # TODO : Renvoyer les données de la requête.

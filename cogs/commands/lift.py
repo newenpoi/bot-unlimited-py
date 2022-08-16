@@ -19,7 +19,7 @@ class Lift(Cog):
         response = None
         
         # On a soulevé moins de x personnes (TODO : Options).
-        n = interaction_service.find_interaction_count(interaction.user.id, interaction.guild.id, 'soulever')
+        n = interaction_service.find_user_interaction_count(interaction.user.id, interaction.guild.id, 'soulever')
         if (n >= 3): response = await reader.read('commands/lift', 'max')
         
         # On a assez de vitalité pour soulever la personne.

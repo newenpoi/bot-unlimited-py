@@ -1,4 +1,6 @@
+import json
 from pathlib import Path
+import random
 from pyquery import PyQuery
 
 async def read(path : str, id_tag: str, *args) -> str:
@@ -34,3 +36,17 @@ def conf(field: str, attribute: str):
         items.update({config.options(field)[i]: config.get(field, config.options(field)[i])})
 
     return items[attribute]
+
+def interact(sum: int) -> str | None:
+    "Renvoie une réponse contenue dans le fichier json par rapport à la somme des interactions."
+    
+    root = Path(__file__).parents[1]
+    file = root / f"json/mentions/0{sum}.json"
+
+    with open(file, 'r', encoding = 'utf-8') as f:
+        data = json.load(f)
+
+    responses = data['response']
+
+    if len(responses): return random.choice(responses)
+    else: return None
