@@ -41,11 +41,11 @@ def find_gold(identifier: int, server: int) -> int:
 
 def find_waifu(identifier: int, server: int, waifu: int):
     with Database() as db:
-        return db.find_one(f'select waifus.name, waifus.source, acquired from users_waifus inner join waifus on waifus.id = users_waifus.waifu_id where user_id_unique = {identifier} and user_id_server = {server} and waifu_id = {waifu}')
+        return db.find_one(f'select waifus.name, waifus.url, acquired from users_waifus inner join waifus on waifus.id = users_waifus.waifu_id where user_id_unique = {identifier} and user_id_server = {server} and waifu_id = {waifu}')
 
 def find_user_pull(identifier: int, server: int):
     with Database() as db:
-        return db.find_one(f'select waifus.name, waifus.gender, waifus.origin, waifus.source, waifus.price, users_pulls.waifu_id from users_pulls inner join waifus on waifus.id = users_pulls.waifu_id where user_id_unique = {identifier} and user_id_server = {server} order by users_pulls.id desc limit 1')
+        return db.find_one(f'select waifus.name, waifus.gender, waifus.origin, waifus.price, waifus.url, waifus.source, users_pulls.waifu_id from users_pulls inner join waifus on waifus.id = users_pulls.waifu_id where user_id_unique = {identifier} and user_id_server = {server} order by users_pulls.id desc limit 1')
 
 def edit_health(identifier: int, server: int, health: int):
     with Database() as db:

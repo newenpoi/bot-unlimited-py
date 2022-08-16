@@ -33,12 +33,12 @@ class Waifu(Cog):
         else:
             # Embed.
             embed = Embed(title = f"\📑 {pull.name}", description = "Utilise /claim si tu veux t'approprier ce personnage.", color = (0x4287f5 if pull.gender == 'M' else 0xdf64f5))
-            embed.set_image(url = pull.source)
+            embed.set_image(url = pull.url)
 
             embed.add_field(name = "Prix", value = f'```💰 {pull.price}```')
             embed.add_field(name = "Origine", value = f'```🌍 {pull.origin}```', inline = False)
 
-            embed.set_footer(text = "Image de source inconnue.", icon_url = "http://18.168.128.213/img/hatada/icons/pixiv.png")
+            embed.set_footer(text = (pull.source or 'Image de source inconnue.'), icon_url = "http://18.168.128.213/img/hatada/icons/pixiv.png")
 
             await interaction.send(embed = embed)
 
