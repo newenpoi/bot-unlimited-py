@@ -18,7 +18,7 @@ class Message(Cog):
             # Récupère le nombre d'interactions de type mention sur ce serveur.
             sum = interaction_service.find_interaction_count(message.guild.id, 'mention')
 
-            if (sum == 3): return
+            if (sum == 4): return
             else: response = reader.interact(sum)
 
             # Enregistre une interaction supplémentaire.

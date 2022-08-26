@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 import random
 from pyquery import PyQuery
+from typing import Union
 
 async def read(path : str, id_tag: str, *args) -> str:
     """
@@ -37,7 +38,7 @@ def conf(field: str, attribute: str):
 
     return items[attribute]
 
-def interact(sum: int) -> str | None:
+def interact(sum: int) -> Union[str, None]:
     "Renvoie une réponse contenue dans le fichier json par rapport à la somme des interactions."
     
     root = Path(__file__).parents[1]

@@ -46,7 +46,7 @@ class Ready(Cog):
     async def clean(self, timer):
         '''Periodically cleans interactions and scoreboard.'''
         while True:
-            interactions = {'soulever': 3000, 'roue': 43200, 'epenis': 86400, 'waifu': 8400}
+            interactions = {'soulever': 3000, 'roue': 43200, 'epenis': 86400, 'waifu': 8400, 'mention': 21600}
 
             for interaction, timespan in interactions.items():
                 # Removes the interactions from database that exceeded a certain timespan.
