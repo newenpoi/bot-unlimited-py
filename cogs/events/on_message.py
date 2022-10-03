@@ -4,7 +4,12 @@ from nextcord import Client, Interaction, Message
 from nextcord.ext.commands import Cog
 
 from utils import reader
-from services import interaction_service
+from services import interaction_service, user_service
+
+'''
+    Problème :
+    Les mentions ne partagent plus le même identifiant dans les canaux privés.
+'''
 
 class Message(Cog):
     def __init__(self, client : Client) -> None:
@@ -25,6 +30,9 @@ class Message(Cog):
             interaction_service.add_interaction(message.author.id, message.guild.id, 'mention')
             
             await message.channel.send(response)
+
+        # Ajoute des roubles pour chaque message.
+        user_service.edit_gold(message.author.id, message.guild.id, 2)
         
 def setup(bot: Client) -> None:
     bot.add_cog(Message(bot))
