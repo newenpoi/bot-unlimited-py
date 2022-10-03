@@ -11,6 +11,12 @@ from .waifu import Waifu
 from .user_waifu import User_Waifu
 from .user_pull import User_Pull
 
+from .category import Category
+from .rarity import Rarity
+from .item import Item
+
+from .inventory import Inventory
+
 def setup():
     with Database() as db:
         
@@ -32,4 +38,16 @@ def setup():
         db.execute(User_Waifu.model)
         if not db.count('waifus') or db.count('waifus') != len(Waifu.data): [db.execute(e) for e in Waifu.data]
 
-        
+        # Ajout de la structure et des données de catégories.
+        db.execute(Category.model)
+        if not db.count('categories') or db.count('categories') != len(Category.data): [db.execute(e) for e in Category.data]
+
+        # Ajout de la structure et des données de raretés.
+        db.execute(Rarity.model)
+        if not db.count('rarities') or db.count('rarities') != len(Rarity.data): [db.execute(e) for e in Rarity.data]
+
+        # Ajout de la structure et des données des objets.
+        db.execute(Item.model)
+        if not db.count('items') or db.count('items') != len(Item.data): [db.execute(e) for e in Item.data]
+
+        db.execute(Inventory.model)

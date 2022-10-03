@@ -1,3 +1,5 @@
+# TODO : Maj Modèle.
+
 from datetime import date, datetime
 
 class User():
@@ -15,6 +17,7 @@ class User():
         `date_birth` DATE,
         `health` int(11) NOT NULL DEFAULT 100,
         `show_date_birth` tinyint(1) DEFAULT NULL,
+
         PRIMARY KEY (`id_unique`, `id_server`),
         CONSTRAINT `fk_user_element` FOREIGN KEY (`element`) REFERENCES `Elements`(`id`)
         ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
