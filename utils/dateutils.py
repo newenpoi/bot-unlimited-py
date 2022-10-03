@@ -19,8 +19,13 @@ def valid(date: str) -> bool:
     return valid
 
 def temporal(timestamp: datetime) -> str:
-    """Returns the time of a datetime object as a string (ie: '19:15:30')."""
+    """Returns the time only of a datetime object as a string (ie: '19:15:30')."""
     return datetime.strftime(timestamp, "%H:%M:%S")
+
+def elapsed(timestamp: datetime) -> int:
+    """Returns seconds elapsed from a timestamp and now."""
+    last = datetime.strptime(str(timestamp), '%Y-%m-%d %H:%M:%S')
+    return int((datetime.now() - last).total_seconds())
 
 def age(born: date) -> str:
     """Returns the age with precision based on this date and today."""
