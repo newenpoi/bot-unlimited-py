@@ -12,6 +12,10 @@ def find_users_having_birthday(server: int) -> list:
     with Database() as db:
         return db.find_all(f'select id_unique as id, date_birth as date, show_date_birth as display from users where id_server = {server} and month(date_birth) = month(now()) and day(date_birth) = day(now())')
 
+def find_user(identifier: int, server: int):
+    with Database() as db:
+        return db.find_one(f'select gold, tick, element, health from users where id_unique = {identifier} and id_server = {server}')
+
 def add_user(identifier: int, server: int, nickname: str):
     with Database() as db:
         return db.execute(f'insert into users (id_unique, id_server, nickname) values ({identifier}, {server}, "{re.escape(nickname)}")')
