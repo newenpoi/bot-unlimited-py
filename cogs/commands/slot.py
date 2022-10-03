@@ -18,7 +18,7 @@ class Slot(Cog):
         # async with interaction.channel.typing(): await asyncio.sleep(0.5)
 
         # The cost for the slot machine is hard coded (100).
-        if not user_service.find_gold(interaction.user.id, interaction.guild_id) >= 100: return await reader.read('commands/slot', 'credit') 
+        if not user_service.find_gold(interaction.user.id, interaction.guild_id) >= 100: response = await reader.read('commands/slot', 'credit'); return await interaction.send(response)
 
         # Result and source to the slot machine capture.
         s = picture.slot()
