@@ -17,9 +17,10 @@ class User():
         `date_birth` DATE,
         `health` int(11) NOT NULL DEFAULT 100,
         `show_date_birth` tinyint(1) DEFAULT NULL,
-
+        `language` int(10) UNSIGNED NOT NULL DEFAULT 1,
         PRIMARY KEY (`id_unique`, `id_server`),
-        CONSTRAINT `fk_user_element` FOREIGN KEY (`element`) REFERENCES `Elements`(`id`)
+        CONSTRAINT `fk_user_element` FOREIGN KEY (`element`) REFERENCES `Elements`(`id`),
+        CONSTRAINT `fk_user_language` FOREIGN KEY (`language`) REFERENCES `Languages`(`id`)
         ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
     '''
 

@@ -18,6 +18,21 @@ async def read(path : str, id_tag: str, *args) -> str:
         element = q(f'div#{id_tag}')
         return element.text(squash_space = False).format(*args)
 
+def translate(model: str, code: str, identifier: int):
+    "Récupère la traduction du modèle en fonction du code et de l'identifiant de la ligne."
+
+    root = Path(__file__).parents[1]
+    
+    # Exemple : strings/models/rarity.json
+    file = root / f"strings/models/{model}.json"
+
+    with open(file, 'r', encoding = 'utf-8') as f:
+        data = json.load(f)
+
+    translation = data[code]
+
+    return translation[str(identifier)]
+
 def conf(field: str, attribute: str):
     "Récupère l'attribut souhaité de la section Système du fichier de configuration.'"
 

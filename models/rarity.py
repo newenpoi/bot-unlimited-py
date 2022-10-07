@@ -14,11 +14,11 @@ class Rarity():
     '''
 
     data = [
-        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Common')",
-        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Unusual')",
-        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Rare')",
-        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Epic')",
-        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Unreal')"
+        "INSERT INTO `rarities` (`id`, `name`, `translation_id`) VALUES (NULL, 'Common', 1)",
+        "INSERT INTO `rarities` (`id`, `name`, `translation_id`) VALUES (NULL, 'Unusual', 2)",
+        "INSERT INTO `rarities` (`id`, `name`, `translation_id`) VALUES (NULL, 'Rare', 3)",
+        "INSERT INTO `rarities` (`id`, `name`, `translation_id`) VALUES (NULL, 'Epic', 4)",
+        "INSERT INTO `rarities` (`id`, `name`, `translation_id`) VALUES (NULL, 'Unreal', 5)"
     ]
 
     def __init__(self):

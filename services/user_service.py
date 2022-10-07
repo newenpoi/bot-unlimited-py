@@ -43,6 +43,10 @@ def find_gold(identifier: int, server: int) -> int:
         structure = db.find_one(f'select gold from users where id_unique = {identifier} and id_server = {server}')
         return structure.gold
 
+def find_language(identifier: int, server: int):
+    with Database() as db:
+        return db.find_one(f'select languages.country_code from users inner join languages on languages.id = users.language where id_unique = {identifier} and id_server = {server}')
+
 def find_waifu(identifier: int, server: int, waifu: int):
     with Database() as db:
         return db.find_one(f'select waifus.name, waifus.url, acquired from users_waifus inner join waifus on waifus.id = users_waifus.waifu_id where user_id_unique = {identifier} and user_id_server = {server} and waifu_id = {waifu}')

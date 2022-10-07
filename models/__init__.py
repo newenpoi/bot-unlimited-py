@@ -1,5 +1,6 @@
 from .base import Database
 
+from .language import Language
 from .element import Element
 from .scoreboard import Scoreboard
 from .user import User
@@ -19,6 +20,10 @@ from .inventory import Inventory
 
 def setup():
     with Database() as db:
+        
+        # Ajout des langages principaux de l'application (la création de cette table doit être exécutée en premier).
+        db.execute(Language.model)
+        if not db.count('languages') or db.count('languages') != len(Language.data): [db.execute(e) for e in Language.data]
         
         db.execute(Element.model)
         if not db.count('elements') or db.count('elements') != len(Element.data): [db.execute(e) for e in Element.data]
