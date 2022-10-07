@@ -23,8 +23,8 @@ def translate(model: str, code: str, identifier: int):
 
     root = Path(__file__).parents[1]
     
-    # Exemple : strings/models/rarity.json
-    file = root / f"strings/models/{model}.json"
+    # Exemple : json/translation/rarity.json
+    file = root / f"json/translation/{model}.json"
 
     with open(file, 'r', encoding = 'utf-8') as f:
         data = json.load(f)
