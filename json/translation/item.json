@@ -1,0 +1,34 @@
+{
+    "en": {
+        "1": "Gravel",
+        "2": "Coal",
+        "3": "Copper",
+        "4": "Iron",
+        "5": "Silver",
+        "6": "Aluminium",
+        "7": "Gold",
+        "8": "Platinum",
+        "9": "Vanadium",
+        "10": "Iridium",
+        "11": "Palladium",
+        "12": "Tungsten",
+        "13": "Uranium",
+        "14": "Newenite"
+    },
+    "fr": {
+        "1": "Gravier",
+        "2": "Charbon",
+        "3": "Cuivre",
+        "4": "Fer",
+        "5": "Argent",
+        "6": "Aluminium",
+        "7": "Or",
+        "8": "Platine",
+        "9": "Vanadium",
+        "10": "Iridium",
+        "11": "Palladium",
+        "12": "Tungstène",
+        "13": "Uranium",
+        "14": "Newenite"
+    }
+}

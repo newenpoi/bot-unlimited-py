@@ -18,7 +18,7 @@ async def read(path : str, id_tag: str, *args) -> str:
         element = q(f'div#{id_tag}')
         return element.text(squash_space = False).format(*args)
 
-def translate(model: str, code: str, identifier: int):
+def translate(model: str, code: str, identifier: int) -> str:
     "Récupère la traduction du modèle en fonction du code et de l'identifiant de la ligne."
 
     root = Path(__file__).parents[1]
