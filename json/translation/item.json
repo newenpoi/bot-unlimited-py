@@ -30,5 +30,21 @@
         "12": "Tungstène",
         "13": "Uranium",
         "14": "Newenite"
+    },
+    "es": {
+        "1": "Grava",
+        "2": "Carbon",
+        "3": "Cobre",
+        "4": "Hierro",
+        "5": "Plata",
+        "6": "Aluminio",
+        "7": "Oro",
+        "8": "Platino",
+        "9": "Vanadio",
+        "10": "Iridio",
+        "11": "Paladio",
+        "12": "Tungsteno",
+        "13": "Uranio",
+        "14": "Newenite"
     }
 }

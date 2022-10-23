@@ -14,9 +14,16 @@ class Anniversary(Cog):
         show_age: int = SlashOption(required = True, description = "Partager ton âge avec les autres membres du serveur ?", choices = {"Oui" : 1, "Non" : 0})
     ) -> None:
 
+        # We need the user's language.
+        language = user_service.find_language(interaction.user.id, interaction.guild_id)
+
         # Verifies if the bot has been bound to a channel.
         binding = binding_service.find_bound_channel(interaction.guild.id)
-        if not binding: return await interaction.send("Je ne peux pas gérer cette commande sans être liée à un canal.")
+        
+        if not binding:
+            # Translation.
+            unbound = reader.read(f'commands/anniversary.{language.country_code}')
+            return await interaction.send(unbound)
 
         # Vérifions qu'on ai pas déjà de date de définie.
         birth = user_service.find_birthday(interaction.user.id)
