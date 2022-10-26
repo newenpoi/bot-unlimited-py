@@ -4,14 +4,14 @@ import random
 from pyquery import PyQuery
 from typing import Union
 
-async def read(path : str, id_tag: str, *args) -> str:
+async def read(path : str, language: str, id_tag: str, *args) -> str:
     """
         Lis le contenu de la balise id spécifiée d'un fichier HTML.\n
         Les arguments sont passés via *args pour le formatage.
     """
 
     root = Path(__file__).parents[1]
-    file = root / f"strings/{path}.html"
+    file = root / f"strings/{path}.{language}.html"
 
     with open(file, 'r', encoding = 'utf-8') as wrapper:
         q = PyQuery(wrapper.read())

@@ -22,19 +22,19 @@ class Anniversary(Cog):
         
         if not binding:
             # Translation.
-            unbound = reader.read(f'commands/anniversary.{language.country_code}')
+            unbound = await reader.read(f'commands/anniversary', language.country_code, 'unbound')
             return await interaction.send(unbound)
 
         # Vérifions qu'on ai pas déjà de date de définie.
         birth = user_service.find_birthday(interaction.user.id)
-        if birth: response = await reader.read('commands/anniversary', 'exist', birth)
+        if birth: response = await reader.read('commands/anniversary', language.country_code, 'exist', birth)
         else:
 
             # Vérifier que la date d'anniversaire soit bien valide.
             valid = dateutils.valid(date)
 
-            if (not valid): response = await reader.read('commands/anniversary', 'invalid')
-            else: response = await reader.read('commands/anniversary', 'set', date)
+            if (not valid): response = await reader.read('commands/anniversary', language.country_code, 'invalid')
+            else: response = await reader.read('commands/anniversary', language.country_code, 'set', date)
 
             # Enregistrer la date en base de données.
             if valid: user_service.edit_birthday(interaction.user.id, interaction.guild_id, date, show_age)

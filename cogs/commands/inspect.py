@@ -17,16 +17,16 @@ class Inspect(Cog):
         if not target: target = interaction.user
 
         # Les infos sockées en bdd.
-        infos = user_service.find_user(target.id, interaction.guild_id)
+        user = user_service.find_user(target.id, interaction.guild_id)
 
         # Embed à renvoyer.
         embed = Embed(colour = 0x0099FF)
         embed.set_image(url = target.display_avatar.url)
 
         embed.add_field(name = 'PSEUDO', value = f'```🔥 {target.name}```')
-        embed.add_field(name = 'ROUBLES', value = f'```💰 {infos.gold}```')
-        embed.add_field(name = 'TICK', value = f'```🕥 {helper.sort(dateutils.elapsed(infos.tick))}```', inline = False)
-        embed.add_field(name = 'VIE', value = f'```❤️ {infos.health}```')
+        embed.add_field(name = 'ROUBLES', value = f'```💰 {user.gold}```')
+        embed.add_field(name = 'TICK', value = f'```🕥 {helper.sort(dateutils.elapsed(user.tick))}```', inline = False)
+        embed.add_field(name = 'VIE', value = f'```❤️ {user.health}```')
 
         embed.set_footer(text = "Le nombre de tick correspond au nombre de secondes depuis la dernière activité.", icon_url = "http://18.168.128.213/img/hatada/icons/reload.png")
 
