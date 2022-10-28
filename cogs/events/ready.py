@@ -1,15 +1,19 @@
 import asyncio
 import random
 import nextcord
-from datetime import datetime
+import requests
+
+from datetime import datetime, timezone, timedelta
+from bs4 import BeautifulSoup
 
 from nextcord import Client, Embed
 from nextcord.ext.commands import Cog
-from pony.orm import *
 
-from utils import dateutils, reader
+from utils import dateutils, reader, writer
 from utils.activity import ActivityType
 from services import user_service, interaction_service, scoreboard_service, binding_service
+
+import config.settings as settings
 
 class Ready(Cog):
     def __init__(self, client : Client) -> None:
@@ -117,6 +121,49 @@ class Ready(Cog):
             
             await asyncio.sleep(timer)
 
+    async def rss(self, timer):
+        '''Checks for rss feed concerning specified topics.'''
+        while True:
+            url = settings.rss['url']
+            
+            headers = {
+                'Accept-Language' : 'fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0'
+            }
+
+            try:
+                r = requests.get(url, headers = headers)
+            except Exception as e:
+                print(f' Erreur survenue lors de la récupération de la source : {url}\n {e}')
+            
+            try:
+                soup = BeautifulSoup(r.content, features = "xml")
+            except Exception as e:
+                print(f' Erreur survenue lors de la récupération des données xml : {url}\n {e}')
+            
+            items = soup.find_all('item')
+            elements = [{'title': item.find('title').text, 'date': item.find('pubDate').text, 'source': item.find('link').text} for item in items]
+            
+            for e in elements:
+                keyword = settings.rss['title']
+                now = datetime.now(timezone.utc)
+                posted = datetime.strptime(e['date'], '%a, %d %b %Y %H:%M:%S %z')
+                
+                # Skip this element if it does not meet the requirements.
+                if (keyword not in e['title'].lower()) or (now - posted > timedelta(days = 1)): continue
+                
+                # If this key is not already present in our json file.
+                if not writer.json_key_exists(keyword, e['date']):
+                    # Adds a new key to the json dictionary and the link as value.
+                    writer.json_value_update(keyword, e['date'], e['source'])
+                    print('Une nouvelle entrée rss [{title}] a été ajoutée au dictionnaire json.'.format(title = settings.rss['title']))
+
+                    # Communicates this info to the server.
+                    channel = self.client.get_channel(577914680282972170)
+                    await channel.send("J'ai trouvé ce lien qui pourrait être intéressant zebi : {link}".format(link = e['source']))
+
+            await asyncio.sleep(timer)
+    
     @Cog.listener()
     async def on_ready(self):
 
@@ -130,7 +177,7 @@ class Ready(Cog):
         await self.client.change_presence(status = nextcord.Status.online, activity = nextcord.Activity(name = "les échos des âmes.", type = ActivityType.listening))
 
         # Periodically.
-        await asyncio.gather(self.syncs(60), self.clean(60), self.heuristics(60))
+        await asyncio.gather(self.syncs(60), self.clean(60), self.heuristics(60), self.rss(15))
 
 def setup(bot: Client) -> None:
     bot.add_cog(Ready(bot))
