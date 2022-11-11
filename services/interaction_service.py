@@ -1,8 +1,18 @@
 from datetime import datetime
 from time import strftime
 
-from typing import List
+from typing import List, TypeVar
 from models.base import Database
+
+from dataclasses import dataclass
+
+@dataclass
+class Interaction:
+    id: int
+    name: str
+    timestamp: datetime
+
+InteractionType = TypeVar('InteractionType', bound = Interaction)
 
 def delete_heuristic_interaction(interaction: str, timespan: int):
     with Database() as db:
@@ -26,4 +36,8 @@ def add_interaction(user: int, server: int, interaction: str):
 
 def find_interaction_timestamp(user: int, server: int, interaction: str):
     with Database() as db:
-        return db.find_one(f'select timestamp from interactions where user_id_unique = {user} and user_id_server = {server} and name = "{interaction}"')
+        interaction = db.find_one(f'select id, name, timestamp from interactions where user_id_unique = {user} and user_id_server = {server} and name = "{interaction}"')
+
+        response = Interaction(id = interaction.id, name = interaction.name, timestamp = interaction.timestamp)
+
+        return response
