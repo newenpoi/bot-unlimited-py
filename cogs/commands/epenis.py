@@ -10,7 +10,6 @@ class EPenis(Cog):
     @slash_command(name = "epenis", description = "Renvoie la taille de ton e-dps pour aujourd'hui.", guild_ids = [535877732106764288])
     async def epenis(self, interaction: Interaction) -> None:
 
-        # TODO: Make a decorator for bound channel verification.
         # Verifies if the bot has been bound to a channel.
         binding = binding_service.find_bound_channel(interaction.guild.id)
         if not binding: return await interaction.send("Je ne peux pas gérer cette commande sans être liée à un canal.")

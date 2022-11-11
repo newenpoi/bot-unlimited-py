@@ -16,7 +16,10 @@ class Anniversary(Cog):
 
         # Verifies if the bot has been bound to a channel.
         binding = binding_service.find_bound_channel(interaction.guild.id)
-        if not binding: return await interaction.send("Je ne peux pas gérer cette commande sans être liée à un canal.")
+        
+        if not binding:
+            response = await reader.read('commands/anniversary', 'common-unbound')
+            return await interaction.send(response)
 
         # Vérifions qu'on ai pas déjà de date de définie.
         birth = user_service.find_birthday(interaction.user.id)

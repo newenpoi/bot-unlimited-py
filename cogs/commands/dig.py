@@ -10,11 +10,14 @@ class Dig(Cog):
     @slash_command(name = "dig", description = "Creuse dans le but de dénicher des trésors !", guild_ids = [535877732106764288])
     async def dig(self, interaction: Interaction) -> None:
         
+        # We need the remaining attempts (we could truncate the query for this).
+        attempts = 9
+
         # Just pick a random raw material from the database.
         item = item_service.find_item_by_category_and_random()
 
         # Make an embed or something (uses item db description or file if not).
-        embed = Embed(title = f"\💎・{item.name}", description = (item.description or await reader.read('commands/dig', 'null', item.value, item.rarity, 9)), color = helper.raritycolor(item.rarity_id))
+        embed = Embed(title = f"\💎・{item.name}", description = (item.description or await reader.read('commands/dig', 'null', item.value, item.rarity.name, attempts)), color = helper.raritycolor(item.rarity.id))
         
         # Adds this item to the user's inventory (note that we only have stackable elements in this command).
         inventory_service.add_user_item(interaction.user.id, interaction.guild_id, item.id, 1, 1)

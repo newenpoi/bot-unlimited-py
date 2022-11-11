@@ -160,7 +160,7 @@ class Ready(Cog):
 
                     # Communicates this info to the server.
                     channel = self.client.get_channel(577914680282972170)
-                    await channel.send("J'ai trouvé ce lien qui pourrait être intéressant zebi : {link}".format(link = e['source']))
+                    await channel.send(e['source'])
 
             await asyncio.sleep(timer)
     
