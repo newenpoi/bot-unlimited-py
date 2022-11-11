@@ -8,17 +8,16 @@ class Rarity():
         CREATE TABLE IF NOT EXISTS `Rarities` (
         `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
         `name` varchar(32) NOT NULL UNIQUE,
-        `translation_id` tinyint(1) NOT NULL,
         PRIMARY KEY (`id`)
         ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
     '''
 
     data = [
-        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Common')",
-        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Unusual')",
+        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Commun')",
+        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Inhabituel')",
         "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Rare')",
-        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Epic')",
-        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Unreal')"
+        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Épique')",
+        "INSERT INTO `rarities` (`id`, `name`) VALUES (NULL, 'Irréel')"
     ]
 
     def __init__(self):

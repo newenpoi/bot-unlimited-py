@@ -18,18 +18,18 @@ class Item():
     '''
 
     data = [
-        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Gravel', NULL, 1, 1, 1)",
-        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Coal', NULL, 1, 1, 1)",
-        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Copper', NULL, 1, 1, 1)",
-        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Iron', NULL, 1, 1, 1)",
-        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Silver', NULL, 1, 2, 1)",
+        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Gravier', NULL, 1, 1, 1)",
+        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Charbon', NULL, 1, 1, 1)",
+        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Cuivre', NULL, 1, 1, 1)",
+        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Fer', NULL, 1, 1, 1)",
+        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Argent', NULL, 1, 2, 1)",
         "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Aluminium', NULL, 1, 2, 1)",
-        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Gold', NULL, 1, 3, 1)",
-        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Platinum', NULL, 1, 4, 1)",
+        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Or', NULL, 1, 3, 1)",
+        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Platine', NULL, 1, 4, 1)",
         "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Vanadium', NULL, 1, 3, 1)",
         "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Iridium', NULL, 1, 3, 1)",
         "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Palladium', NULL, 1, 3, 1)",
-        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Tungsten', NULL, 1, 4, 1)",
+        "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Tungstène', NULL, 1, 4, 1)",
         "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Uranium', NULL, 1, 4, 1)",
         "INSERT INTO `items` (`id`, `name`, `description`, `value`, `rarity_id`, `category_id`) VALUES (NULL, 'Newenite', NULL, 1, 5, 1)",
     ]

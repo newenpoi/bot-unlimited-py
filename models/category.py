@@ -12,10 +12,10 @@ class Category():
     '''
 
     data = [
-        "INSERT INTO `categories` (`id`, `name`) VALUES (NULL, 'Raw')",
-        "INSERT INTO `categories` (`id`, `name`) VALUES (NULL, 'Augment')",
-        "INSERT INTO `categories` (`id`, `name`) VALUES (NULL, 'Weapon')",
-        "INSERT INTO `categories` (`id`, `name`) VALUES (NULL, 'Organic')"
+        "INSERT INTO `categories` (`id`, `name`) VALUES (NULL, 'Brut')",
+        "INSERT INTO `categories` (`id`, `name`) VALUES (NULL, 'Augmentation')",
+        "INSERT INTO `categories` (`id`, `name`) VALUES (NULL, 'Outil')",
+        "INSERT INTO `categories` (`id`, `name`) VALUES (NULL, 'Organique')"
     ]
 
     def __init__(self):
