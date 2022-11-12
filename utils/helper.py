@@ -1,4 +1,4 @@
-
+from typing import Union
 import re
 
 def nest(d):
@@ -14,7 +14,7 @@ def nest(d):
         objet.__dict__[k.lower()] = nest(d[k])
     return objet
 
-def sort(input: int | str):
+def sort(input: Union[int, str]):
     """Tri les entiers en séparant les milliers."""
     return re.sub(r'\B(\-)?(?=(?:\d{3})+(?:\.|$))', ' ', str(input))
 
