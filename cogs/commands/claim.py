@@ -1,7 +1,7 @@
 from nextcord import Embed, Interaction, slash_command
 from nextcord.ext.commands import Bot, Cog
 from services import interaction_service, user_service
-from utils import reader
+from utils import reader, dateutils
 
 class Claim(Cog):
     def __init__(self, bot : Bot) -> None:
@@ -16,6 +16,9 @@ class Claim(Cog):
         # On doit récupérer le dernier pull.
         pull = user_service.find_user_pull(interaction.user.id, interaction.guild.id)
         if not pull: response = await reader.read('commands/claim', 'none')
+
+        # Si le dernier pull est périmé (ou temps négatif).
+        if dateutils.elapsed(pull.created) > 300 or dateutils.elapsed(pull.created) < 0: response = await reader.read('commands/claim', 'timeout', interaction.user.display_name)
 
         # Si on possède déjà cette waifu.
         if user_service.find_waifu(interaction.user.id, interaction.guild_id, pull.waifu_id): response = await reader.read('commands/claim', 'exist')
