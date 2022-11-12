@@ -9,6 +9,7 @@ class Scoreboard:
     id_server: int
     value: int
     unit: str
+    scale: int
 
 ScoreboardType = TypeVar('ScoreboardType', bound = Scoreboard)
 
@@ -27,13 +28,16 @@ def truncate_scoreboard():
         return db.execute('truncate table scoreboard')
 
 def find_score(identifier: int, server: int):
+    '''Renvoie les données du score du membre du serveur.'''
     with Database() as db:
         scoreboard = db.find_one(f'select id_unique, id_server, value, unit, scale from scoreboard where id_unique = {identifier} and id_server = {server}')
-
-        response = Scoreboard(id_unique = scoreboard.id_unique, id_server = scoreboard.id_server, value = scoreboard.value, unit = scoreboard.unit, scale = scoreboard.scale)
-
-        return response
+        
+        # Renvoie un objet Scoreboard si des données sont récupérées.
+        if scoreboard: scoreboard = Scoreboard(id_unique = scoreboard.id_unique, id_server = scoreboard.id_server, value = scoreboard.value, unit = scoreboard.unit, scale = scoreboard.scale)
+        
+        return scoreboard
 
 def add_score(identifier: int, server: int, value: int, unit: str, scale: int):
+    '''Ajoute les données du score de l'utilisateur depuis le module scoreboard sur ce serveur.'''
     with Database() as db:
         return db.execute(f'insert into scoreboard (id_unique, id_server, value, unit, scale) values ({identifier}, {server}, {value}, "{unit}", {scale})')

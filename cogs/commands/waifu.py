@@ -43,7 +43,7 @@ class Waifu(Cog):
             await interaction.send(embed = embed)
 
     @waifu.error
-    async def error(self, interaction, error):
+    async def error(self, interaction: Interaction, error):
         await interaction.send(f'```Stack Trace : ${error}```')
 
 def setup(bot: Bot) -> None:

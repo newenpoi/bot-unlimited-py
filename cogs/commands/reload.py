@@ -22,7 +22,7 @@ class Reload(Cog):
         await interaction.send(embed = embed)
 
     @reload.error
-    async def error(self, interaction, error):
+    async def error(self, interaction: Interaction, error):
         if isinstance(error, ExtensionNotFound): response = await reader.read('commands/reload', 'error'); await interaction.send(response)
         else: await interaction.send(f'```Stack Trace : ${error}```')
 

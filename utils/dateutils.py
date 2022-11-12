@@ -2,6 +2,7 @@ from datetime import date, datetime
 import re
 
 def valid(date: str) -> bool:
+    '''Vérifie que la date est valide.'''
     # Testing fiability.
     pattern = r"^(0?[1-9]|[12][0-9]|3[01])[/](0?[1-9]|1[012])[/](19[0-9]\d|20[0-1]\d|202[0-1])$"
     if not re.match(pattern, date): return False

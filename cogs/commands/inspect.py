@@ -23,17 +23,23 @@ class Inspect(Cog):
         embed = Embed(colour = 0x0099FF)
         embed.set_image(url = target.display_avatar.url)
 
+        # Gestion du tick (dernier message).
+        tick = helper.sort(dateutils.elapsed(infos.tick))
+        
+        # Le tick ne change pas s'il est positif, autrement il est impossible à évaluer (voir heure été hiver).
+        tick = tick if float(dateutils.elapsed(infos.tick)) >= 0 else ("Impossible à Mesurer")
+
         embed.add_field(name = 'PSEUDO', value = f'```🔥 {target.name}```')
         embed.add_field(name = 'ROUBLES', value = f'```💰 {infos.gold}```')
-        embed.add_field(name = 'TICK', value = f'```🕥 {helper.sort(dateutils.elapsed(infos.tick))}```', inline = False)
+        embed.add_field(name = 'TICK', value = f'```🕥 {tick}```', inline = False)
         embed.add_field(name = 'VIE', value = f'```❤️ {infos.health}```')
 
-        embed.set_footer(text = "Le nombre de tick correspond au nombre de secondes depuis la dernière activité.", icon_url = "http://18.168.128.213/img/hatada/icons/reload.png")
+        embed.set_footer(text = "Le nombre de tick correspond au nombre de secondes depuis le dernier message.", icon_url = "http://18.168.128.213/img/hatada/icons/reload.png")
 
         await interaction.send(embed = embed)
 
     @inspect.error
-    async def error(self, interaction, error):
+    async def error(self, interaction: Interaction, error):
         await interaction.send(f'```Stack Trace : ${error}```')
 
 def setup(bot: Bot) -> None:
