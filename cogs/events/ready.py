@@ -177,7 +177,7 @@ class Ready(Cog):
         await self.client.change_presence(status = nextcord.Status.online, activity = nextcord.Activity(name = "les échos des âmes.", type = ActivityType.listening))
 
         # Periodically.
-        await asyncio.gather(self.syncs(60), self.clean(60), self.heuristics(60), self.rss(15))
+        await asyncio.gather(self.syncs(60), self.clean(60), self.heuristics(60))
 
 def setup(bot: Client) -> None:
     bot.add_cog(Ready(bot))

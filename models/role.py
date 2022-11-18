@@ -9,7 +9,7 @@ class Role():
         `id_channel` bigint(20) UNSIGNED NOT NULL,
         `id_message` bigint(20) UNSIGNED NOT NULL,
         `id_role` bigint(20) UNSIGNED NOT NULL,
-        `emoji` varchar(32) NOT NULL,
+        `emoji` varchar(128) NOT NULL,
         PRIMARY KEY (`id_server`, `id_channel`, `id_message`, `id_role`)
         ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
     '''

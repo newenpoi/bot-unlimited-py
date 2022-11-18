@@ -17,6 +17,9 @@ class Message(Cog):
 
     @Cog.listener()
     async def on_message(self, message: nextcord.Message) -> None:
+
+        # Les bots n'ont pas besoin d'argent (pour l'instant) !
+        if message.author.bot == True: return
         
         # Si on a mentionné notre bot.
         if self.client.user.mentioned_in(message):
