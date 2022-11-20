@@ -1,6 +1,6 @@
-from nextcord import Embed, Interaction, slash_command
+from nextcord import Interaction, slash_command
 from nextcord.ext.commands import Bot, Cog
-from services import interaction_service, user_service
+from services import user_service, pull_service, waifu_service
 from utils import reader, dateutils
 
 class Claim(Cog):
@@ -14,27 +14,27 @@ class Claim(Cog):
         response = None
         
         # On doit récupérer le dernier pull.
-        pull = user_service.find_user_pull(interaction.user.id, interaction.guild.id)
+        pull = pull_service.find_pull(interaction.user.id, interaction.guild.id)
         if not pull: response = await reader.read('commands/claim', 'none')
 
         # Si le dernier pull est périmé (ou temps négatif).
         if dateutils.elapsed(pull.created) > 300 or dateutils.elapsed(pull.created) < 0: response = await reader.read('commands/claim', 'timeout', interaction.user.display_name)
 
         # Si on possède déjà cette waifu.
-        if user_service.find_waifu(interaction.user.id, interaction.guild_id, pull.waifu_id): response = await reader.read('commands/claim', 'exist')
+        if waifu_service.find_waifu(interaction.user.id, interaction.guild_id, pull.waifu.id): response = await reader.read('commands/claim', 'exist')
 
         # On doit avoir assez de crédits.
-        if user_service.find_gold(interaction.user.id, interaction.guild_id) < pull.price: response = await reader.read('commands/claim', 'fund')
+        if user_service.find_gold(interaction.user.id, interaction.guild_id) < pull.waifu.price: response = await reader.read('commands/claim', 'fund')
 
         if not response:
             # Ajout de cette waifu à l'utilisateur.
-            user_service.add_user_waifu(interaction.user.id, interaction.guild_id, pull.waifu_id)
+            waifu_service.add_user_waifu(interaction.user.id, interaction.guild_id, pull.waifu.id)
 
             # Retrait des sommes d'argent.
-            user_service.edit_gold(interaction.user.id, interaction.guild_id, -pull.price)
+            user_service.edit_gold(interaction.user.id, interaction.guild_id, -pull.waifu.price)
 
             # Annonce.
-            response = await reader.read('commands/claim', 'claimed', interaction.user.display_name, pull.name, pull.price)
+            response = await reader.read('commands/claim', 'claimed', interaction.user.display_name, pull.waifu.name, pull.waifu.price)
         
         await interaction.send(response)
 

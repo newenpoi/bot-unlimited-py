@@ -1,4 +1,3 @@
-import time
 from nextcord import Interaction, slash_command, SlashOption
 from nextcord.ext.commands import Bot, Cog
 from utils import reader, dateutils

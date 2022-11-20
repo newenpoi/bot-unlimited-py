@@ -2,6 +2,10 @@ import re
 from typing import List
 from models.base import Database
 
+def add_user(identifier: int, server: int, nickname: str):
+    with Database() as db:
+        return db.execute(f'insert into users (id_unique, id_server, nickname) values ({identifier}, {server}, "{re.escape(nickname)}")')
+
 def find_all_user_id_having_server(server: int) -> list:
     with Database() as db:
         return db.find_all(f'select id_unique from users where id_server = {server}')
@@ -14,20 +18,6 @@ def find_user(identifier: int, server: int):
     '''Récupère les données de l'utilisateur sur le serveur.'''
     with Database() as db:
         return db.find_one(f'select id_unique, id_server, nickname, gold, tick, element, health from users where id_unique = {identifier} and id_server = {server}')
-
-def add_user(identifier: int, server: int, nickname: str):
-    with Database() as db:
-        return db.execute(f'insert into users (id_unique, id_server, nickname) values ({identifier}, {server}, "{re.escape(nickname)}")')
-
-def add_user_pull(identifier: int, server: int):
-    '''Ajoute une pioche de waifu à cet utilisateur sur ce serveur.'''
-    with Database() as db:
-        return db.execute(f'insert into users_pulls (user_id_unique, user_id_server, waifu_id) values ({identifier}, {server}, FLOOR(1 + RAND() * (select count(*) from waifus)))')
-
-def add_user_waifu(identifier: int, server: int, waifu: int):
-    '''Ajoute cette waifu à l'utilisateur sur ce serveur.'''
-    with Database() as db:
-        return db.execute(f'insert into users_waifus (waifu_id, user_id_unique, user_id_server) values ({waifu}, {identifier}, {server})')
 
 def find_health(identifier: int, server: int) -> int:
     '''Renvoie les points de vie de cet utilisateur sur ce serveur.'''
@@ -46,16 +36,6 @@ def find_gold(identifier: int, server: int) -> int:
     with Database() as db:
         structure = db.find_one(f'select gold from users where id_unique = {identifier} and id_server = {server}')
         return structure.gold
-
-def find_waifu(identifier: int, server: int, waifu: int):
-    '''Récupère la dernière waifu de l'utilisateur sur ce serveur.'''
-    with Database() as db:
-        return db.find_one(f'select waifus.name, waifus.url, acquired from users_waifus inner join waifus on waifus.id = users_waifus.waifu_id where user_id_unique = {identifier} and user_id_server = {server} and waifu_id = {waifu}')
-
-def find_user_pull(identifier: int, server: int):
-    '''Récupère la waifu piochée.'''
-    with Database() as db:
-        return db.find_one(f'select waifus.name, waifus.gender, waifus.origin, waifus.price, waifus.url, waifus.source, users_pulls.waifu_id, users_pulls.created from users_pulls inner join waifus on waifus.id = users_pulls.waifu_id where user_id_unique = {identifier} and user_id_server = {server} order by users_pulls.id desc limit 1')
 
 def edit_health(identifier: int, server: int, health: int):
     '''Modifie les points de vie de cet utilisateur sur le serveur.'''

@@ -12,7 +12,7 @@ class Interaction:
     name: str
     timestamp: datetime
 
-InteractionType = TypeVar('InteractionType', bound = Interaction)
+# InteractionType = TypeVar('InteractionType', bound = Interaction)
 
 def delete_heuristic_interaction(interaction: str, timespan: int):
     with Database() as db:
@@ -28,9 +28,9 @@ def find_interaction_timestamp(user: int, server: int, interaction: str):
     '''Renvoie la date à laquelle a eu lieu la dernière interaction de ce module.'''
     with Database() as db:
         interaction = db.find_one(f'select id, name, timestamp from interactions where user_id_unique = {user} and user_id_server = {server} and name = "{interaction}"')
-        if interaction: interaction = Interaction(id = interaction.id, name = interaction.name, timestamp = interaction.timestamp)
-
-        return interaction
+        if not interaction: return None
+        
+        return Interaction(id = interaction.id, name = interaction.name, timestamp = interaction.timestamp)
 
 def find_interaction_count(server: int, interaction: str) -> int:
     '''Renvoie le nombre d'interactions spécifique du serveur.'''

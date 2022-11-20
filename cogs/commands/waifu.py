@@ -1,6 +1,6 @@
 from nextcord import Embed, Interaction, slash_command
 from nextcord.ext.commands import Bot, Cog
-from services import interaction_service, user_service
+from services import interaction_service, pull_service
 from utils import reader
 
 class Waifu(Cog):
@@ -20,10 +20,10 @@ class Waifu(Cog):
         # TODO : Renvoyer les données de la requête.
 
         # Instancie un pull de waifu aléatoire.
-        user_service.add_user_pull(interaction.user.id, interaction.guild.id)
+        pull_service.add_user_pull(interaction.user.id, interaction.guild.id)
 
         # Récupère la waifu instanciée.
-        pull = user_service.find_user_pull(interaction.user.id, interaction.guild.id)
+        pull = pull_service.find_pull(interaction.user.id, interaction.guild.id)
 
         # On ajoute une interaction supplémentaire.
         interaction_service.add_interaction(interaction.user.id, interaction.guild.id, 'waifu')
@@ -32,13 +32,13 @@ class Waifu(Cog):
         if (response): await interaction.send(response)
         else:
             # Embed.
-            embed = Embed(title = f"\📑 {pull.name}", description = "Utilise /claim si tu veux t'approprier ce personnage.", color = (0x4287f5 if pull.gender == 'M' else 0xdf64f5))
+            embed = Embed(title = f"\📑 {pull.waifu.name}", description = "Utilise /claim si tu veux t'approprier ce personnage.", color = (0x4287f5 if pull.waifu.gender == 'M' else 0xdf64f5))
             embed.set_image(url = pull.url)
 
-            embed.add_field(name = "Prix", value = f'```💰 {pull.price}```')
-            embed.add_field(name = "Origine", value = f'```🌍 {pull.origin}```', inline = False)
+            embed.add_field(name = "Prix", value = f'```💰 {pull.waifu.price}```')
+            embed.add_field(name = "Origine", value = f'```🌍 {pull.waifu.origin}```', inline = False)
 
-            embed.set_footer(text = (pull.source or 'Image de source inconnue.'), icon_url = "http://18.168.128.213/img/hatada/icons/pixiv.png")
+            embed.set_footer(text = (pull.waifu.source or 'Image de source inconnue.'), icon_url = "http://18.168.128.213/img/hatada/icons/pixiv.png")
 
             await interaction.send(embed = embed)
 
