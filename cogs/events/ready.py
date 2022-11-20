@@ -25,24 +25,48 @@ class Ready(Cog):
             # Syncs the members of every guilds with the database.
             for guild in self.client.guilds:
                 
-                # Gets the amount of members synced in the database in this server.
+                # Gets the amount of members synced in the database in this server (TODO: Renvoyer un tableau).
                 rows = user_service.find_all_user_id_having_server(guild.id)
-                syncs = 0
+                rows = [x.id_unique for x in rows]
+                syncs = 0; deleted = 0
                 
-                # Makes the comparison with the members (also includes bots) present in the guild.
+                # Le nombre d'utilisateurs synchronisés est inférieur à ceux présent sur le serveur.
                 if len(rows) < (guild.member_count):
-                    # Syncs every member of the server that is not synchronized yet.
+                    # On resynchronise les membres.
                     for member in guild.members:
-                        # TODO : Sync user display name.
-                        # If this guild member id is not present in rows.
+                        # TODO : Sync user display name (voir avec on_message).
                         if member.id not in rows:
-                            # Adds a new record for this user.
+                            # Ajoute une entrée pour ce membre.
                             print(f'Synchronisation du membre : {member.id} avec pour pseudo {member.display_name}...')
                             user_service.add_user(member.id, member.guild.id, member.display_name)
                             syncs = syncs + 1
 
                 # Shows the number of synced users.
                 if syncs: print(f'Synchronisation de {syncs} utilisateurs pour la guilde {guild.name}.')
+
+                # Finds the bound channel for announcement.
+                channel = binding_service.find_bound_channel(guild.id)
+                if channel is not None: channel = self.client.get_channel(channel.channel)
+
+                # Chaque identifiant des membres du serveur.
+                identifiers = [member.id for member in guild.members]
+                
+                # La liste des membres ne faisant plus parti du serveur.
+                generator = [row for row in rows if row not in identifiers]
+
+                # Supprime le membre de la base de données s'il n'est plus présent sur le serveur.
+                for x in generator:
+                    # Récupère les infos sur cet identifiant.
+                    user = user_service.find_user(x.id_unique, guild.id)
+                    user_service.remove_user(x.id_unique, guild.id)
+
+                    deleted = deleted + 1
+                    
+                    print(f"Suppression de l'utilisateur {x.id_unique} de la base de données avec pour pseudo {user.nickname}.")
+                    response = await reader.read('events/ready', 'desertion', user.nickname)
+                    await channel.send(response)
+
+                if deleted > 0: print(f"Nombre de membres supprimés sur le serveur {guild.name} depuis la dernière itération : {deleted}")
             
             # Sleeps for a determined amount of time.
             await asyncio.sleep(timer)

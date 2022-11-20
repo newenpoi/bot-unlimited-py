@@ -13,7 +13,7 @@ def find_users_having_birthday(server: int) -> list:
 def find_user(identifier: int, server: int):
     '''Récupère les données de l'utilisateur sur le serveur.'''
     with Database() as db:
-        return db.find_one(f'select gold, tick, element, health from users where id_unique = {identifier} and id_server = {server}')
+        return db.find_one(f'select id_unique, id_server, nickname, gold, tick, element, health from users where id_unique = {identifier} and id_server = {server}')
 
 def add_user(identifier: int, server: int, nickname: str):
     with Database() as db:
@@ -71,3 +71,8 @@ def edit_gold(identifier: int, server: int, gold: int):
     '''Modifie la somme d'argent de cet utilisateur sur ce serveur.'''
     with Database() as db:
         return db.execute(f'update users set gold = gold + {gold} where id_unique = {identifier} and id_server = {server}')
+
+def remove_user(identifier: int, server: int):
+    '''Supprime l'utilisateur de la base de données.'''
+    with Database() as db:
+        return db.execute(f'delete from users where id_unique = {identifier} and id_server = {server}')

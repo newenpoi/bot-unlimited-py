@@ -47,7 +47,7 @@ class Database:
         return self.cursor.fetchone() if list else helper.nest(self.cursor.fetchone())
 
     def fetchall(self, list = False):
-        return self.cursor.fetchone() if list else helper.nest(self.cursor.fetchall())
+        return self.cursor.fetchall() if list else helper.nest(self.cursor.fetchall())
 
     def callproc(self, sql, params = []):
         return self.cursor.callproc(sql, params)
