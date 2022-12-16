@@ -21,7 +21,7 @@ class Dig(Cog):
         embed = Embed(title = f"\💎・{item.name}", description = (item.description or await reader.read('commands/dig', 'null', item.value, item.rarity.name, (9 - n))), color = helper.raritycolor(item.rarity.id))
         
         # Adds this item to the user's inventory (note that we only have stackable elements in this command).
-        inventory_service.add_user_item(interaction.user.id, interaction.guild_id, item.id, 1, 1)
+        inventory_service.add_inventory_item(interaction.user.id, interaction.guild_id, item.id, 1, 1)
 
         # On ajoute une interaction supplémentaire.
         interaction_service.add_interaction(interaction.user.id, interaction.guild.id, 'dig')
