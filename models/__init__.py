@@ -16,6 +16,7 @@ from .rarity import Rarity
 from .item import Item
 
 from .inventory import Inventory
+from .quiz import Quiz
 
 def setup():
     with Database() as db:
@@ -51,3 +52,4 @@ def setup():
         if not db.count('items') or db.count('items') != len(Item.data): [db.execute(e) for e in Item.data]
 
         db.execute(Inventory.model)
+        db.execute(Quiz.model)

@@ -1,0 +1,97 @@
+{
+    "1": {
+        "Q": "Quelle est la distance Terre - Soleil (en millions de kilomètres) ?",
+        "R": 150,
+        "S": 5
+    },
+    "2": {
+        "Q": "En quelle année fût la prise de la bastille ?",
+        "R": 1789,
+        "S": 5
+    },
+    "4": {
+        "Q": "Quel personnage important est responsable du coup d'État du 18 de Brumaire ?",
+        "R": "Napoléon Bonaparte",
+        "S": 10
+    },
+    "5": {
+        "Q": "Quel grand titre du jeu vidéo est sorti un 11/11/2011 (11-11-11) ?",
+        "R": "Skyrim",
+        "S": 5
+    },
+    "6": {
+        "Q": "Quel est le premier élément du tableau périodique ?",
+        "R": "Hydrogène",
+        "S": 5
+    },
+    "7": {
+        "Q": "Quel fût le nom du biplace ayant largué la toute première bombe atomique de l'histoire ?",
+        "R": "Enola Gay",
+        "S": 10
+    },
+    "8": {
+        "Q": "Quelle est la capitale de la Bolivie ?",
+        "R": "La Paz",
+        "S": 10
+    },
+    "9": {
+        "Q": "Quel personnage de l'histoire devient chancelier de l'Allemagne en 1933 ?",
+        "R": "Adolph Hitler",
+        "S": 5
+    },
+    "10": {
+        "Q": "Quelle est la capitale du Japon ?",
+        "R": "Tokyo",
+        "S": 5
+    },
+    "11": {
+        "Q": "Contre qui la France perd la bataille de Trafalgar ?",
+        "R": "Royaume Uni",
+        "S": 10
+    },
+    "12": {
+        "Q": "Est ce que Nayore est roux ?",
+        "R": "Non",
+        "S": 50
+    },
+    "13": {
+        "Q": "Quelle est la planète la plus proche du soleil ?",
+        "R": "Mercure",
+        "S": 5
+    },
+    "14": {
+        "Q": "Quelle est la galaxie la plus proche de la voie lactée ?",
+        "R": "Andromède",
+        "S": 5
+    },
+    "15": {
+        "Q": "En quelle année eu lieu l'éruption du mont Saint Helens ?",
+        "R": 1980,
+        "S": 5
+    },
+    "16": {
+        "Q": "Qui fût le premier président de la cinquième république ?",
+        "R": "Charles De Gaulle",
+        "S": 10
+    },
+    "17": {
+        "Q": "Qui est le premier président des États Unis ?",
+        "R": "Georges Washington",
+        "S": 5
+    },
+    "18": {
+        "Q": "Quelle bataille fit perdre toute initiative aux nazis sur le front de l'est en 1943 ?",
+        "R": "Koursk",
+        "S": 10
+    },
+    "19": {
+        "Q": "Combien font 12 x 12 ?",
+        "R": 144,
+        "S": 5
+    },
+    "20": {
+        "Q": "Dans Classroom of the Elite, comment se nomme le personnage principal ?",
+        "R": "Kiyotaka Ayanokoji",
+        "S": 5
+    }
+}
