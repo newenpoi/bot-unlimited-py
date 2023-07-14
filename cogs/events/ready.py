@@ -56,13 +56,14 @@ class Ready(Cog):
 
                 # Supprime le membre de la base de données s'il n'est plus présent sur le serveur.
                 for x in generator:
-                    # Récupère les infos sur cet identifiant.
-                    user = user_service.find_user(x.id_unique, guild.id)
-                    user_service.remove_user(x.id_unique, guild.id)
+                    
+                    # Récupère les infos sur cet identifiant et le dégage.
+                    user = user_service.find_user(x, guild.id)
+                    user_service.remove_user(x, guild.id)
 
                     deleted = deleted + 1
                     
-                    print(f"Suppression de l'utilisateur {x.id_unique} de la base de données avec pour pseudo {user.nickname}.")
+                    print(f"Suppression de l'utilisateur {x} de la base de données avec pour pseudo {user.nickname}.")
                     response = await reader.read('events/ready', 'desertion', user.nickname)
                     await channel.send(response)
 
