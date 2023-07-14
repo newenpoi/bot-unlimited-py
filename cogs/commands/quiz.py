@@ -8,7 +8,7 @@ class Quiz(Cog):
     def __init__(self, bot : Bot) -> None:
         self.bot = bot
 
-    @slash_command(name = "quiz", description = "Démarrer le Quiz pour gagner quelques viagradollars.", default_member_permissions = 8)
+    @slash_command(name = "quiz", description = "Démarrer le Quiz pour gagner quelques viagradollars.")
     async def quiz(self, interaction: Interaction, theme: int = SlashOption(required = True, description = "Choisir le thème du Quiz.", choices = {"Mixte": 0})) -> None:
         # Vérifie qu'un quiz n'est pas déjà en cours.
         active = interaction_service.find_interaction_count(interaction.guild_id, 'quiz')
